@@ -28,4 +28,13 @@ public class Spent {
     @Enumerated(EnumType.STRING)
     private Method method;
 
+    public Spent(SpentResponseDTO response) {
+        this.date = response.date();
+        this.spent = response.date();
+        this.status = response.status();
+        this.value = response.value();
+        this.category = response.category();
+        this.account = response.account();
+        this.method = response.method();
+    }
 }

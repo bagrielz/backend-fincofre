@@ -1,4 +1,24 @@
 package br.com.fincofre.api.spent;
 
-public record SpentResponseDTO(String date, String spent, Status status, String value, Category category, String account, Method method) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record SpentResponseDTO(
+
+        @NotBlank
+        String date,
+        @NotBlank
+        String spent,
+        @NotNull
+        Status status,
+        @NotBlank
+        String value,
+        @NotNull
+        Category category,
+        @NotBlank
+        String account,
+        @NotNull
+        Method method
+
+) {
 }

@@ -19,6 +19,8 @@ public class Spent {
 
     @Enumerated(EnumType.STRING) // Armazena o enum como string no banco de dados
     private Status status;
+
+    @Column(name = "spent_value")
     private String value;
 
     @Enumerated(EnumType.STRING)

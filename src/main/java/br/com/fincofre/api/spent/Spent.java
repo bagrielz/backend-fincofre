@@ -1,7 +1,10 @@
 package br.com.fincofre.api.spent;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Table(name = "spents") // Define o nome da tabela no banco de dados
 @Entity(name = "Spent") // Marca esta classe como uma entidade JPA

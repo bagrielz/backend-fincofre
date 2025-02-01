@@ -29,7 +29,7 @@ public class SpentController {
 
     @GetMapping
     public List<SpentListingDTO> list() {
-        // Converte uma lista de gastos para uma lista de listagem de gastos (DTO)
+        // Converte uma lista de gastos para uma lista de listagem de gastos (SpentListingDTO)
         return repository.findAll().stream().map(SpentListingDTO::new).toList();
     }
 

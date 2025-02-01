@@ -2,8 +2,8 @@ package br.com.fincofre.api.spent;
 
 public record SpentListingDTO(String date, String spent, Status status, String value, Category category, String account, Method method) {
 
-    public SpentListingDTO(Spent spent) {
-        this(spent.getDate(), spent.getSpent(), spent.getStatus(), spent.getValue(), spent.getCategory(), spent.getAccount(), spent.getMethod());
+    public SpentListingDTO(Spent data) {
+        this(data.getDate(), data.getSpent(), data.getStatus(), data.getValue(), data.getCategory(), data.getAccount(), data.getMethod());
     }
 
 }

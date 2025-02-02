@@ -33,7 +33,8 @@ public class SpentController {
     @PutMapping
     @Transactional
     public void update(@RequestBody @Valid SpentUpdateDTO response) {
-
+        var spent = repository.getReferenceById(response.id());
+        spent.updateData(response);
     }
 
 }

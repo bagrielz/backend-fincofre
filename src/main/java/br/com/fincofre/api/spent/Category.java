@@ -4,7 +4,7 @@ public enum Category {
 
     INTERNET,
     TRANSPORTE,
-    ENTRENIMENTO,
+    ENTRETENIMENTO,
     EDUCAÇÃO,
     CARTÃO,
     SAÚDE,

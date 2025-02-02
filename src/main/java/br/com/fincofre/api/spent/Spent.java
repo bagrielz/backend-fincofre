@@ -35,11 +35,21 @@ public class Spent {
 
     public Spent(SpentResponseDTO response) {
         this.date = response.date();
-        this.spent = response.date();
+        this.spent = response.spent();
         this.status = response.status();
         this.value = response.value();
         this.category = response.category();
         this.account = response.account();
         this.method = response.method();
+    }
+
+    public void updateData(SpentUpdateDTO response) {
+        if (response.date() != null) this.date = response.date();
+        if (response.spent() != null) this.spent = response.spent();
+        if (response.status() != null) this.status = response.status();
+        if (response.value() != null) this.value = response.value();
+        if (response.category() != null) this.category = response.category();
+        if (response.account() != null) this.account = response.account();
+        if (response.method() != null) this.method = response.method();
     }
 }

@@ -1,9 +1,6 @@
 package br.com.fincofre.api.controller;
 
-import br.com.fincofre.api.spent.Spent;
-import br.com.fincofre.api.spent.SpentListingDTO;
-import br.com.fincofre.api.spent.SpentRepository;
-import br.com.fincofre.api.spent.SpentResponseDTO;
+import br.com.fincofre.api.spent.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +28,12 @@ public class SpentController {
     public List<SpentListingDTO> list() {
         // Converte uma lista de gastos para uma lista de listagem de gastos (SpentListingDTO)
         return repository.findAll().stream().map(SpentListingDTO::new).toList();
+    }
+
+    @PutMapping
+    @Transactional
+    public void update(@RequestBody @Valid SpentUpdateDTO response) {
+
     }
 
 }

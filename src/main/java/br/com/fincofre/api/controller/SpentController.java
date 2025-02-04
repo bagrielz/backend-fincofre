@@ -37,4 +37,10 @@ public class SpentController {
         spent.updateData(response);
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void delete(@PathVariable Long id) { // Com essa anotação, o Spring entende que o id passado na url é o parâmetro do método
+        repository.deleteById(id);
+    }
+
 }

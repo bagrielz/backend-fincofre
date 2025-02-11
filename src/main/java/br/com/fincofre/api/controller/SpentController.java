@@ -3,8 +3,10 @@ package br.com.fincofre.api.controller;
 import br.com.fincofre.api.spent.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -17,30 +19,48 @@ public class SpentController {
 
     @PostMapping
     @Transactional // Garante que todas as operações sejam feitas dentro de uma única transação
-    public void register(@RequestBody @Valid SpentResponseDTO response) {
+    public ResponseEntity register(@RequestBody @Valid SpentResponseDTO response, UriComponentsBuilder uriBuilder) {
         // O @RequestBody pega as informações do corpo da requisição
         // A validação será feita automaticamente antes do método ser executado
         // Se algum campo do DTO não for válido, uma exceção será lançada
-        repository.save(new Spent(response));
+        var spent = new Spent(response);
+        repository.save(spent);
+
+        var uri = uriBuilder.path("/gastos/{id}").buildAndExpand(spent.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new SpentDetailsDTO(spent));
     }
 
     @GetMapping
-    public List<SpentListingDTO> list() {
+    public ResponseEntity<List<SpentListingDTO>> list() {
         // Converte uma lista de gastos para uma lista de listagem de gastos (SpentListingDTO)
-        return repository.findAll().stream().map(SpentListingDTO::new).toList();
+        var spentsList = repository.findAll().stream().map(SpentListingDTO::new).toList();
+
+        return ResponseEntity.ok(spentsList);
     }
 
     @PutMapping
     @Transactional
-    public void update(@RequestBody @Valid SpentUpdateDTO response) {
+    public ResponseEntity update(@RequestBody @Valid SpentUpdateDTO response) {
         var spent = repository.getReferenceById(response.id());
         spent.updateData(response);
+
+        return ResponseEntity.ok(new SpentDetailsDTO(spent));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void delete(@PathVariable Long id) { // Com essa anotação, o Spring entende que o id passado na url é o parâmetro do método
+    public ResponseEntity delete(@PathVariable Long id) { // Com essa anotação, o Spring entende que o id passado na url é o parâmetro do método
         repository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detail(@PathVariable Long id) {
+        var spent = repository.getReferenceById(id);
+
+        return ResponseEntity.ok(new SpentDetailsDTO(spent));
     }
 
 }

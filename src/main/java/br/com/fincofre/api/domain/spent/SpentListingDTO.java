@@ -1,4 +1,4 @@
-package br.com.fincofre.api.spent;
+package br.com.fincofre.api.domain.spent;
 
 public record SpentListingDTO(Long id, String date, String spent, Status status, String value, Category category, String account, Method method) {
 

@@ -1,6 +1,6 @@
 package br.com.fincofre.api.controller;
 
-import br.com.fincofre.api.spent.*;
+import br.com.fincofre.api.domain.spent.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package br.com.fincofre.api.spent;
+package br.com.fincofre.api.domain.spent;
 
 import jakarta.validation.constraints.NotNull;
 

@@ -14,15 +14,12 @@ import java.util.List;
 @RequestMapping("/gastos")
 public class SpentController {
 
-    @Autowired // Injeta automaticamente uma instância de SpentRepository gerenciada pelo Spring
+    @Autowired
     private SpentRepository repository;
 
     @PostMapping
-    @Transactional // Garante que todas as operações sejam feitas dentro de uma única transação
+    @Transactional
     public ResponseEntity register(@RequestBody @Valid SpentResponseDTO response, UriComponentsBuilder uriBuilder) {
-        // O @RequestBody pega as informações do corpo da requisição
-        // A validação será feita automaticamente antes do método ser executado
-        // Se algum campo do DTO não for válido, uma exceção será lançada
         var spent = new Spent(response);
         repository.save(spent);
 
@@ -50,7 +47,7 @@ public class SpentController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity delete(@PathVariable Long id) { // Com essa anotação, o Spring entende que o id passado na url é o parâmetro do método
+    public ResponseEntity delete(@PathVariable Long id) {
         repository.deleteById(id);
 
         return ResponseEntity.noContent().build();

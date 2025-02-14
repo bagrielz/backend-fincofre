@@ -1,4 +1,4 @@
-package br.com.fincofre.api.infra;
+package br.com.fincofre.api.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;

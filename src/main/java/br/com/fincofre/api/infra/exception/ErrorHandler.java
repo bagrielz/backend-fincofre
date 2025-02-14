@@ -7,8 +7,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
 // Classe para tratar erros
+@RestControllerAdvice
 public class ErrorHandler {
 
     // Método para tratar o erro 404

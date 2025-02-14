@@ -1,0 +1,1 @@
+alter table users add login varchar(255) not null;

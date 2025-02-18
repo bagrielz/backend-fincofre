@@ -18,7 +18,7 @@ O projeto está em desenvolvimento com as seguintes tecnologias (até o momento)
 
 - [Java 17](https://docs.oracle.com/en/java/)
 - [Spring Boot](https://spring.io/projects/spring-boot)
-- [Spring Security]([https://react.dev/](https://spring.io/projects/spring-security))
+- [Spring Security](https://spring.io/projects/spring-security)
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 - [MySQL](https://dev.mysql.com/doc/)
 - [Swagger](https://swagger.io/docs/)

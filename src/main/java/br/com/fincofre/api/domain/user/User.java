@@ -1,6 +1,7 @@
 package br.com.fincofre.api.domain.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,4 +23,10 @@ public class User {
     private String email;
     private String password;
 
+    public User(UserResponseDTO response) {
+        this.login = response.login();
+        this.name = response.name();
+        this.email = response.email();
+        this.password = response.password();
+    }
 }

@@ -29,4 +29,11 @@ public class User {
         this.email = response.email();
         this.password = response.password();
     }
+
+    public void updateData(UserUpdateDTO response) {
+        if (response.login() != null) this.login = response.login();
+        if (response.name() != null) this.name = response.name();
+        if (response.email() != null) this.email = response.email();
+        if (response.password() != null) this.password = response.password();
+    }
 }

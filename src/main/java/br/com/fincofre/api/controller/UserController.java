@@ -1,17 +1,11 @@
 package br.com.fincofre.api.controller;
 
-import br.com.fincofre.api.domain.user.User;
-import br.com.fincofre.api.domain.user.UserDetailsDTO;
-import br.com.fincofre.api.domain.user.UserRepository;
-import br.com.fincofre.api.domain.user.UserResponseDTO;
+import br.com.fincofre.api.domain.user.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -31,6 +25,15 @@ public class UserController {
         var uri = uriBuilder.path("/cadastrar/{id}").buildAndExpand(user.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new UserDetailsDTO(user));
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity update(@RequestBody @Valid UserUpdateDTO response) {
+        var user = repository.getReferenceById(response.id()); // Carrega o objeto do banco de dados pegando o id da resposta
+        user.updateData(response); // Atualiza os dados
+
+        return ResponseEntity.ok(new UserDetailsDTO(user)); // Retorna o corpo do objeto para o front
     }
 
 }

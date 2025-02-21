@@ -21,8 +21,8 @@ public class AuthController {
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid AuthDTO data) {
         // O método authenticate() do AuthenticationManager espera um objeto do tipo Authentication e UsernamePasswordAuthenticationToken é uma implementação concreta desse contrato
-        var token = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var auth = manager.authenticate(token);
+        var token = new UsernamePasswordAuthenticationToken(data.login(), data.password()); // Cria o DTO UsernamePasswordAuthenticationToken e passa as informações de acesso
+        var auth = manager.authenticate(token); // Dispara o processo de autenticação
 
         return ResponseEntity.ok().build();
     }

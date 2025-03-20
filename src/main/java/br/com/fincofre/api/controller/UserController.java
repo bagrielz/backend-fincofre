@@ -1,6 +1,7 @@
 package br.com.fincofre.api.controller;
 
 import br.com.fincofre.api.domain.user.*;
+import br.com.fincofre.api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,11 @@ public class UserController {
 
     @Autowired
     private UserRepository repository;
+    private UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
     @Transactional
@@ -43,6 +49,14 @@ public class UserController {
         var userList = repository.findAll().stream().map(UserListingDTO::new).toList();
 
         return ResponseEntity.ok(userList);
+    }
+
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity delete(@RequestHeader("Authorization") String token) {
+        userService.checkToken(token);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

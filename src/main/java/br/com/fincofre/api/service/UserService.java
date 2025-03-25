@@ -15,9 +15,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void checkToken(String token) {
-        if (token == null) throw new RuntimeException();
+    public void checkAuth(String auth) {
+        System.out.println("Autorização do usuário: " + auth);
+        if (auth == null) throw new RuntimeException();
 
+        var token = tokenService.recoverToken(auth);
         var subject = tokenService.getSubject(token);
         userRepository.deleteByLogin(subject);
     }

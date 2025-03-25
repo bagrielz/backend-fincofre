@@ -2,6 +2,7 @@ package br.com.fincofre.api.controller;
 
 import br.com.fincofre.api.domain.user.*;
 import br.com.fincofre.api.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +54,9 @@ public class UserController {
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity delete(@RequestHeader("Authorization") String token) {
-        userService.checkToken(token);
+    public ResponseEntity delete(@RequestHeader("Authorization") String auth) {
+        System.out.println("Autorização de acesso: " + auth);
+        userService.checkAuth(auth);
 
         return ResponseEntity.noContent().build();
     }

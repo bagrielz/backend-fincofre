@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpRequest;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -45,8 +46,16 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException ex) {
-            throw new RuntimeException("Token JWT inválido ou expirado!");
+            ex.printStackTrace();
+            throw new RuntimeException("Token JWT inválido ou expirado");
         }
+    }
+
+    // Esse método recupera o token do cabeçalho
+    public String recoverToken(String token) {
+        if (token != null) return token.replace("Bearer ", "");
+
+        return null;
     }
 
     private Instant expirationDate() {

@@ -16,16 +16,20 @@ import java.io.IOException;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
+    private final UserRepository repository;
 
-    @Autowired
-    private UserRepository repository;
+    public SecurityFilter(TokenService tokenService, UserRepository repository) {
+        this.tokenService = tokenService;
+        this.repository = repository;
+    }
 
     // Esse método filtra as chamadas à API
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = recoverToken(request);
+        // Recupera o token da requisição
+        var authHeader = request.getHeader("Authorization");
+        var token = tokenService.recoverToken(authHeader);
 
         if (token != null) {
             var subject = tokenService.getSubject(token);
@@ -38,12 +42,4 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // Esse método recupera o token do cabeçalho
-    private String recoverToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
-
-        if (authHeader != null) return authHeader.replace("Bearer ", "");
-
-        return null;
-    }
 }

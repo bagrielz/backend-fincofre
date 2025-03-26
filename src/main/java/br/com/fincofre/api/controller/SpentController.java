@@ -2,7 +2,6 @@ package br.com.fincofre.api.controller;
 
 import br.com.fincofre.api.domain.spent.*;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,11 @@ import java.util.List;
 @RequestMapping("/gastos")
 public class SpentController {
 
-    @Autowired
-    private SpentRepository repository;
+    private final SpentRepository repository;
+
+    public SpentController(SpentRepository repository) {
+        this.repository = repository;
+    }
 
     @PostMapping
     @Transactional

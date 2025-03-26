@@ -4,7 +4,6 @@ import br.com.fincofre.api.domain.user.*;
 import br.com.fincofre.api.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +15,13 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UserController {
 
-    @Autowired
     private UserRepository repository;
     private UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserRepository repository, UserService userService) {
+        this.repository = repository;
         this.userService = userService;
+
     }
 
     @PostMapping

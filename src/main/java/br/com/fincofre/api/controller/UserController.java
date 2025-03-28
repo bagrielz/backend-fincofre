@@ -4,9 +4,7 @@ import br.com.fincofre.api.domain.user.*;
 import br.com.fincofre.api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -46,10 +44,8 @@ public class UserController {
     }
 
     @DeleteMapping
-    @Transactional
-    public ResponseEntity delete(@RequestHeader("Authorization") String auth) {
-        System.out.println("Autorização de acesso: " + auth);
-        userService.checkAuth(auth);
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") String auth) {
+        userService.deleteUser(auth);
 
         return ResponseEntity.noContent().build();
     }

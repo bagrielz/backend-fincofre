@@ -5,8 +5,6 @@ import br.com.fincofre.api.infra.security.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-
 @Service
 public class UserService {
 
@@ -38,11 +36,17 @@ public class UserService {
         return new UserDetailsDTO(user);
     }
 
-    public String checkAuth(String auth) {
+    @Transactional
+    public void deleteUser(String auth) {
+        var subject = checkAuth(auth);
+
+        userRepository.deleteByLogin(subject);
+    }
+
+    private String checkAuth(String auth) {
         if (auth == null) throw new RuntimeException(); // Escrever uma exception personalizável
 
         var token = tokenService.recoverToken(auth);
         return tokenService.getSubject(token);
-//        userRepository.deleteByLogin(subject);
     }
 }

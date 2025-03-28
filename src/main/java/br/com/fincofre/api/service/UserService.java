@@ -5,6 +5,8 @@ import br.com.fincofre.api.infra.security.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -34,6 +36,15 @@ public class UserService {
         user.updateData(response);
 
         return new UserDetailsDTO(user);
+    }
+
+    @Transactional
+    public List<UserDetailsDTO> listUserInformation(String auth, UserDetailsDTO response) {
+        var subject = checkAuth(auth);
+
+        if (!subject.equals(response.login())) throw new RuntimeException(); // Escrever uma exception personalizável
+
+        return userRepository.findById(response.id()).stream().map(UserDetailsDTO::new).toList();
     }
 
     @Transactional

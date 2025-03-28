@@ -37,10 +37,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserListingDTO>> list() {
-        var userList = repository.findAll().stream().map(UserListingDTO::new).toList();
+    public ResponseEntity<List<UserDetailsDTO>> list(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserDetailsDTO response) {
+        var userDetails = userService.listUserInformation(auth, response);
 
-        return ResponseEntity.ok(userList);
+        return ResponseEntity.ok(userDetails);
     }
 
     @DeleteMapping

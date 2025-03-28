@@ -2,7 +2,6 @@ package br.com.fincofre.api.controller;
 
 import br.com.fincofre.api.domain.user.*;
 import br.com.fincofre.api.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,24 +24,18 @@ public class UserController {
     }
 
     @PostMapping
-    @Transactional
-    public ResponseEntity register(@RequestBody @Valid UserResponseDTO response, UriComponentsBuilder uriBuilder) {
-        var user = new User(response);
-        repository.save(user);
+    public ResponseEntity<UserDetailsDTO> register(@RequestBody @Valid UserResponseDTO response) {
+        var user = userService.createUser(response);
 
-        // Retorna a URI com as informações do novo usuário cadastrado
-        var uri = uriBuilder.path("/cadastrar/{id}").buildAndExpand(user.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(new UserDetailsDTO(user));
+        return ResponseEntity.ok().body(user);
     }
 
     @PutMapping
-    @Transactional
-    public ResponseEntity update(@RequestBody @Valid UserUpdateDTO response) {
-        var user = repository.getReferenceById(response.id()); // Carrega o objeto do banco de dados pegando o id da resposta
-        user.updateData(response); // Atualiza os dados
+    public ResponseEntity<UserDetailsDTO> update(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserUpdateDTO response) {
+        System.out.println("Resposta do body: " + response);
+        var user = userService.updateUser(auth, response);
 
-        return ResponseEntity.ok(new UserDetailsDTO(user)); // Retorna o corpo do objeto para o front
+        return ResponseEntity.ok().body(user); // Retorna o corpo do objeto para o front
     }
 
     @GetMapping

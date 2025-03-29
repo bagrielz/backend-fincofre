@@ -37,7 +37,6 @@ public class TokenService {
     // Esse método pega o token, verifica se está correto e devolve o usuário correspondente
     public String getSubject(String token) {
         var algorithm = Algorithm.HMAC256(secret);
-        System.out.println("Algoritmo: " + algorithm);
 
         try {
             return JWT.require(algorithm)

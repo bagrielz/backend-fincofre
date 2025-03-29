@@ -1,5 +1,6 @@
 package br.com.fincofre.api.domain.spent;
 
+import br.com.fincofre.api.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,8 @@ public class Spent {
     @Id // Define este campo como a chave primária
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Faz com que o banco gere automaticamente o ID sequencialmente
     private Long id;
+
+    @Column(name = "spent_date")
     private String date;
     private String spent;
 
@@ -32,6 +35,10 @@ public class Spent {
 
     @Enumerated(EnumType.STRING)
     private Method method;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user;
 
     public Spent(SpentResponseDTO response) {
         this.date = response.date();

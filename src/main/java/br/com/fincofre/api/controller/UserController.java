@@ -12,11 +12,9 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UserController {
 
-    private final UserRepository repository;
     private final UserService userService;
 
-    public UserController(UserRepository repository, UserService userService) {
-        this.repository = repository;
+    public UserController(UserService userService) {
         this.userService = userService;
 
     }

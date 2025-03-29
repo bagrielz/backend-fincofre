@@ -1,1 +1,0 @@
-alter table spents add date varchar(10) not null;

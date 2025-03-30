@@ -16,7 +16,6 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
-
     }
 
     @PostMapping
@@ -28,7 +27,6 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<UserDetailsDTO> update(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserUpdateDTO response) {
-        System.out.println("Resposta do body: " + response);
         var user = userService.updateUser(auth, response);
 
         return ResponseEntity.ok().body(user); // Retorna o corpo do objeto para o front

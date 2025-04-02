@@ -18,28 +18,28 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<UserDetailsDTO> register(@RequestBody @Valid UserResponseDTO response) {
         var user = userService.createUser(response);
 
         return ResponseEntity.ok().body(user);
     }
 
-    @PutMapping
+    @PutMapping("/atualizar")
     public ResponseEntity<UserDetailsDTO> update(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserUpdateDTO response) {
         var user = userService.updateUser(auth, response);
 
         return ResponseEntity.ok().body(user); // Retorna o corpo do objeto para o front
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<UserDetailsDTO>> list(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserDetailsDTO response) {
         var userDetails = userService.listUserInformation(auth, response);
 
         return ResponseEntity.ok(userDetails);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/excluir")
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String auth) {
         userService.deleteUser(auth);
 

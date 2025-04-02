@@ -26,7 +26,7 @@ public class SecurityConfigurations {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/login", "/usuarios/registrar").permitAll(); // Libera essa requisição para qualquer usuário acessar
+                    req.requestMatchers("/auth", "/usuarios/cadastrar").permitAll(); // Libera essa requisição para qualquer usuário acessar
                     req.anyRequest().authenticated(); // Solicita autenticação para as outras requisições
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

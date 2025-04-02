@@ -40,7 +40,7 @@ public class Spent {
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
-    public Spent(SpentResponseDTO response) {
+    public Spent(SpentResponseDTO response, User user) {
         this.date = response.date();
         this.spent = response.spent();
         this.status = response.status();
@@ -48,6 +48,7 @@ public class Spent {
         this.category = response.category();
         this.account = response.account();
         this.method = response.method();
+        this.user = user;
     }
 
     public void updateData(SpentUpdateDTO response) {
@@ -59,4 +60,5 @@ public class Spent {
         if (response.account() != null) this.account = response.account();
         if (response.method() != null) this.method = response.method();
     }
+
 }

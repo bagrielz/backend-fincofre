@@ -3,6 +3,7 @@ package br.com.fincofre.api.service;
 import br.com.fincofre.api.domain.spent.*;
 import br.com.fincofre.api.domain.user.User;
 import br.com.fincofre.api.domain.user.UserRepository;
+import br.com.fincofre.api.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ public class SpentService {
 
     @Transactional
     public SpentDetailsDTO createSpent(String auth, SpentResponseDTO response) {
-        if (!userRepository.existsById(response.userId())) throw new RuntimeException(); // Escrever uma exception personalizável
+        if (!userRepository.existsById(response.userId())) throw new UserNotFoundException("Usuário com ID " + response.userId() + " não foi encontrado");
 
         var user = checksIfTheIdBelongsToTheUser(response.userId(), auth);
         var spent = new Spent(response, user);
@@ -43,7 +44,7 @@ public class SpentService {
         var user = userRepository.getReferenceById(userId);
         var subject = userService.checkAuth(auth);
 
-        if (!subject.equals(user.getLogin())) throw new RuntimeException(); // Escrever uma exception personalizável
+        if (!subject.equals(user.getLogin())) throw new UserNotFoundException("Login " + subject + " não corresponde ao ID " + userId);
 
         return user;
     }

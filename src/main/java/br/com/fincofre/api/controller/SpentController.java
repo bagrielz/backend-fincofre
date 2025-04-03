@@ -27,13 +27,13 @@ public class SpentController {
         return ResponseEntity.ok().body(spent);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<SpentListingDTO>> list() {
-//        // Converte uma lista de gastos para uma lista de listagem de gastos (SpentListingDTO)
-//        var spentsList = repository.findAll().stream().map(SpentListingDTO::new).toList();
-//
-//        return ResponseEntity.ok(spentsList);
-//    }
+    @GetMapping("/listar/{userId}")
+    public ResponseEntity<List<SpentListingDTO>> list(@PathVariable Long userId) {
+        System.out.println("ID do usuário: " + userId);
+        var spentsList = spentService.getSpentsByUserId(userId);
+
+        return ResponseEntity.ok(spentsList);
+    }
 //
 //    @PutMapping
 //    @Transactional

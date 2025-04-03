@@ -1,12 +1,11 @@
 package br.com.fincofre.api.service;
 
-import br.com.fincofre.api.domain.spent.Spent;
-import br.com.fincofre.api.domain.spent.SpentDetailsDTO;
-import br.com.fincofre.api.domain.spent.SpentRepository;
-import br.com.fincofre.api.domain.spent.SpentResponseDTO;
+import br.com.fincofre.api.domain.spent.*;
 import br.com.fincofre.api.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class SpentService {
@@ -28,5 +27,10 @@ public class SpentService {
         spentRepository.save(spent);
 
         return new SpentDetailsDTO(spent);
+    }
+
+    @Transactional
+    public List<SpentListingDTO> getSpentsByUserId(Long userId) {
+        return spentRepository.findByUserId(userId).stream().map(SpentListingDTO::new).toList();
     }
 }

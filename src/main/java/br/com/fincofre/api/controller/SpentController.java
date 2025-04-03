@@ -31,15 +31,13 @@ public class SpentController {
 
         return ResponseEntity.ok(spentsList);
     }
-//
-//    @PutMapping
-//    @Transactional
-//    public ResponseEntity update(@RequestBody @Valid SpentUpdateDTO response) {
-//        var spent = repository.getReferenceById(response.id());
-//        spent.updateData(response);
-//
-//        return ResponseEntity.ok(new SpentDetailsDTO(spent));
-//    }
+
+    @PutMapping("/atualizar")
+    public ResponseEntity<SpentDetailsDTO> update(@RequestHeader("Authorization") String auth, @RequestBody @Valid SpentUpdateDTO response) {
+        var spent = spentService.updateSpent(auth, response);
+
+        return ResponseEntity.ok(new SpentDetailsDTO(spent));
+    }
 //
 //    @DeleteMapping("/{id}")
 //    @Transactional

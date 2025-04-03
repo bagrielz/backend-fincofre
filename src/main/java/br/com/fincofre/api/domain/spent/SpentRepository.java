@@ -8,6 +8,6 @@ import java.util.List;
 // Repositório JPA que fornece métodos CRUD para a entidade Spent
 public interface SpentRepository extends JpaRepository<Spent, Long> {
 
-    List<Spent> findByUserId(Long userId);
+    List<Spent> findByUserId(Long user);
 
 }

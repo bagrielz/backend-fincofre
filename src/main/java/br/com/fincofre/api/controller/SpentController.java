@@ -4,9 +4,7 @@ import br.com.fincofre.api.domain.spent.*;
 import br.com.fincofre.api.service.SpentService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -21,16 +19,15 @@ public class SpentController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<SpentDetailsDTO> register(@RequestBody @Valid SpentResponseDTO response) {
-        var spent = spentService.createSpent(response);
+    public ResponseEntity<SpentDetailsDTO> register(@RequestHeader("Authorization") String auth, @RequestBody @Valid SpentResponseDTO response) {
+        var spent = spentService.createSpent(auth, response);
 
         return ResponseEntity.ok().body(spent);
     }
 
     @GetMapping("/listar/{userId}")
-    public ResponseEntity<List<SpentListingDTO>> list(@PathVariable Long userId) {
-        System.out.println("ID do usuário: " + userId);
-        var spentsList = spentService.getSpentsByUserId(userId);
+    public ResponseEntity<List<SpentListingDTO>> list(@PathVariable Long userId, @RequestHeader("Authorization") String auth) {
+        var spentsList = spentService.getSpentsByUserId(userId, auth);
 
         return ResponseEntity.ok(spentsList);
     }

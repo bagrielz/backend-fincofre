@@ -54,7 +54,7 @@ public class UserService {
         userRepository.deleteByLogin(subject);
     }
 
-    private String checkAuth(String auth) {
+    public String checkAuth(String auth) {
         if (auth == null) throw new RuntimeException(); // Escrever uma exception personalizável
 
         var token = tokenService.recoverToken(auth);

@@ -1,10 +1,8 @@
 package br.com.fincofre.api.service;
 
 import br.com.fincofre.api.domain.spent.*;
-import br.com.fincofre.api.domain.user.User;
 import br.com.fincofre.api.domain.user.UserRepository;
 import br.com.fincofre.api.exception.SpentNotFoundException;
-import br.com.fincofre.api.exception.UserNotFoundException;
 import br.com.fincofre.api.infra.security.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,10 +44,7 @@ public class SpentService {
     public Spent updateSpent(String auth, SpentUpdateDTO response) {
         if (!spentRepository.existsById(response.id())) throw new SpentNotFoundException("Gasto com o ID " + response.id() + " não foi encontrado");
 
-        var subject = userService.checkAuth(auth);
-        var spent = spentRepository.getReferenceById(response.id());
-
-        if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o usuário " + subject);
+        var spent = checkSpentBelongsToUser(auth, response.id());
 
         spent.updateData(response);
 
@@ -60,12 +55,9 @@ public class SpentService {
     public void deleteSpent(String auth, Long id) {
         if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
 
-        var subject = userService.checkAuth(auth);
-        var spent = spentRepository.getReferenceById(id);
+        var spent = checkSpentBelongsToUser(auth, id);
 
-        if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o login " + subject);
-
-        spentRepository.deleteById(id);
+        spentRepository.deleteById(spent.getId());
     }
 
     public Spent detailSpent(String auth, Long id) {

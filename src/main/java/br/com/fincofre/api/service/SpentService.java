@@ -35,7 +35,6 @@ public class SpentService {
         return new SpentDetailsDTO(spent);
     }
 
-    @Transactional
     public List<SpentListingDTO> getSpentsByUser(String auth) {
         var subject = userService.checkAuth(auth);
         var user = userRepository.getReferenceByLogin(subject);
@@ -67,6 +66,23 @@ public class SpentService {
         if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o login " + subject);
 
         spentRepository.deleteById(id);
+    }
+
+    public Spent detailSpent(String auth, Long id) {
+        if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
+
+        var checkSpent = checkSpentBelongsToUser(auth, id);
+
+        return spentRepository.getReferenceById(checkSpent.getId());
+    }
+
+    private Spent checkSpentBelongsToUser(String auth, Long id) {
+        var subject = userService.checkAuth(auth);
+        var spent = spentRepository.getReferenceById(id);
+
+        if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o login " + subject);
+
+        return spent;
     }
 
 }

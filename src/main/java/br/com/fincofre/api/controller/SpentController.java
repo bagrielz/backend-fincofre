@@ -46,11 +46,11 @@ public class SpentController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity detail(@PathVariable Long id) {
-//        var spent = repository.getReferenceById(id);
-//
-//        return ResponseEntity.ok(new SpentDetailsDTO(spent));
-//    }
+    @GetMapping("/detalhar/{id}")
+    public ResponseEntity<SpentDetailsDTO> detail(@RequestHeader("Authorization") String auth, @PathVariable Long id) {
+        var spent = spentService.detailSpent(auth, id);
+
+        return ResponseEntity.ok(new SpentDetailsDTO(spent));
+    }
 
 }

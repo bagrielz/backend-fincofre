@@ -45,7 +45,7 @@ public class SpentService {
 
     @Transactional
     public Spent updateSpent(String auth, SpentUpdateDTO response) {
-        if (!userRepository.existsById(response.id())) throw new SpentNotFoundException("Gasto com o ID " + response.id() + " não foi encontrado");
+        if (!spentRepository.existsById(response.id())) throw new SpentNotFoundException("Gasto com o ID " + response.id() + " não foi encontrado");
 
         var subject = userService.checkAuth(auth);
         var spent = spentRepository.getReferenceById(response.id());
@@ -55,6 +55,18 @@ public class SpentService {
         spent.updateData(response);
 
         return spent;
+    }
+
+    @Transactional
+    public void deleteSpent(String auth, Long id) {
+        if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
+
+        var subject = userService.checkAuth(auth);
+        var spent = spentRepository.getReferenceById(id);
+
+        if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o login " + subject);
+
+        spentRepository.deleteById(id);
     }
 
 }

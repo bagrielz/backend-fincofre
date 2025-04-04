@@ -38,15 +38,14 @@ public class SpentController {
 
         return ResponseEntity.ok(new SpentDetailsDTO(spent));
     }
-//
-//    @DeleteMapping("/{id}")
-//    @Transactional
-//    public ResponseEntity delete(@PathVariable Long id) {
-//        repository.deleteById(id);
-//
-//        return ResponseEntity.noContent().build();
-//    }
-//
+
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") String auth, @PathVariable Long id) {
+        spentService.deleteSpent(auth, id);
+
+        return ResponseEntity.noContent().build();
+    }
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity detail(@PathVariable Long id) {
 //        var spent = repository.getReferenceById(id);

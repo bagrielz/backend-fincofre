@@ -25,9 +25,9 @@ public class SpentController {
         return ResponseEntity.ok().body(spent);
     }
 
-    @GetMapping("/listar/{userId}")
-    public ResponseEntity<List<SpentListingDTO>> list(@PathVariable Long userId, @RequestHeader("Authorization") String auth) {
-        var spentsList = spentService.getSpentsByUserId(userId, auth);
+    @GetMapping("/listar")
+    public ResponseEntity<List<SpentListingDTO>> list(@RequestHeader("Authorization") String auth) {
+        var spentsList = spentService.getSpentsByUser(auth);
 
         return ResponseEntity.ok(spentsList);
     }

@@ -1,10 +1,8 @@
 package br.com.fincofre.api.service;
 
 import br.com.fincofre.api.domain.spent.*;
-import br.com.fincofre.api.domain.user.User;
 import br.com.fincofre.api.domain.user.UserRepository;
 import br.com.fincofre.api.exception.SpentNotFoundException;
-import br.com.fincofre.api.exception.UserNotFoundException;
 import br.com.fincofre.api.infra.security.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +33,6 @@ public class SpentService {
         return new SpentDetailsDTO(spent);
     }
 
-    @Transactional
     public List<SpentListingDTO> getSpentsByUser(String auth) {
         var subject = userService.checkAuth(auth);
         var user = userRepository.getReferenceByLogin(subject);
@@ -45,14 +42,37 @@ public class SpentService {
 
     @Transactional
     public Spent updateSpent(String auth, SpentUpdateDTO response) {
-        if (!userRepository.existsById(response.id())) throw new SpentNotFoundException("Gasto com o ID " + response.id() + " não foi encontrado");
+        if (!spentRepository.existsById(response.id())) throw new SpentNotFoundException("Gasto com o ID " + response.id() + " não foi encontrado");
 
-        var subject = userService.checkAuth(auth);
-        var spent = spentRepository.getReferenceById(response.id());
-
-        if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o usuário " + subject);
+        var spent = checkSpentBelongsToUser(auth, response.id());
 
         spent.updateData(response);
+
+        return spent;
+    }
+
+    @Transactional
+    public void deleteSpent(String auth, Long id) {
+        if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
+
+        var spent = checkSpentBelongsToUser(auth, id);
+
+        spentRepository.deleteById(spent.getId());
+    }
+
+    public Spent detailSpent(String auth, Long id) {
+        if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
+
+        var checkSpent = checkSpentBelongsToUser(auth, id);
+
+        return spentRepository.getReferenceById(checkSpent.getId());
+    }
+
+    private Spent checkSpentBelongsToUser(String auth, Long id) {
+        var subject = userService.checkAuth(auth);
+        var spent = spentRepository.getReferenceById(id);
+
+        if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o login " + subject);
 
         return spent;
     }

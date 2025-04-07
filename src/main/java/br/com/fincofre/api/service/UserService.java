@@ -1,6 +1,7 @@
 package br.com.fincofre.api.service;
 
 import br.com.fincofre.api.domain.user.*;
+import br.com.fincofre.api.exception.UserNotFoundException;
 import br.com.fincofre.api.infra.security.TokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,22 +30,22 @@ public class UserService {
     @Transactional
     public UserDetailsDTO updateUser(String auth, UserUpdateDTO response) {
         var subject = checkAuth(auth);
+        var user = userRepository.getReferenceByLogin(subject);
 
-        if (!subject.equals(response.login())) throw new RuntimeException(); // Escrever uma exception personalizável
-
-        var user = userRepository.getReferenceById(response.id());
         user.updateData(response);
 
         return new UserDetailsDTO(user);
     }
 
     @Transactional
-    public List<UserDetailsDTO> listUserInformation(String auth, UserDetailsDTO response) {
+    public UserDetailsDTO listUserInformation(String auth, UserDetailsDTO response) {
         var subject = checkAuth(auth);
 
-        if (!subject.equals(response.login())) throw new RuntimeException(); // Escrever uma exception personalizável
+        if (!subject.equals(response.login())) throw new UserNotFoundException("Login " + response.login() + " está incorreto ou não foi encontrado");
 
-        return userRepository.findById(response.id()).stream().map(UserDetailsDTO::new).toList();
+        var user = userRepository.getReferenceByLogin(subject);
+
+        return new UserDetailsDTO(user);
     }
 
     @Transactional
@@ -55,8 +56,6 @@ public class UserService {
     }
 
     public String checkAuth(String auth) {
-        if (auth == null) throw new RuntimeException(); // Escrever uma exception personalizável
-
         var token = tokenService.recoverToken(auth);
         return tokenService.getSubject(token);
     }

@@ -1,11 +1,11 @@
 package br.com.fincofre.api.infra.security;
 
-import br.com.fincofre.api.domain.user.UserRepository;
+import br.com.fincofre.api.repositories.UserRepository;
+import br.com.fincofre.api.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

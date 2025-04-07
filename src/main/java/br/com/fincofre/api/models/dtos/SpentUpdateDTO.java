@@ -1,0 +1,9 @@
+package br.com.fincofre.api.models.dtos;
+
+import br.com.fincofre.api.models.enums.Category;
+import br.com.fincofre.api.models.enums.Method;
+import br.com.fincofre.api.models.enums.Status;
+import jakarta.validation.constraints.NotNull;
+
+public record SpentUpdateDTO(@NotNull Long id, String date, String spent, Status status, String value, Category category, String account, Method method) {
+}

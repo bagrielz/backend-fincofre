@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<UserDetailsDTO>> list(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserDetailsDTO response) {
-        var userDetails = userService.listUserInformation(auth, response);
+    public ResponseEntity<UserDetailsDTO> list(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserDetailsDTO response) {
+        var userDetails = userService.getUserInformation(auth, response);
 
         return ResponseEntity.ok(userDetails);
     }

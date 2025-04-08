@@ -1,9 +1,6 @@
 package br.com.fincofre.api.controllers;
 
-import br.com.fincofre.api.models.dtos.SpentDetailsDTO;
-import br.com.fincofre.api.models.dtos.SpentListingDTO;
-import br.com.fincofre.api.models.dtos.SpentResponseDTO;
-import br.com.fincofre.api.models.dtos.SpentUpdateDTO;
+import br.com.fincofre.api.models.dtos.*;
 import br.com.fincofre.api.services.SpentService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +26,7 @@ public class SpentController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<SpentListingDTO>> list(@RequestHeader("Authorization") String auth) {
+    public ResponseEntity<SpentListWithTotalDTO> list(@RequestHeader("Authorization") String auth) {
         var spentsList = spentService.getSpentsByUser(auth);
 
         return ResponseEntity.ok(spentsList);

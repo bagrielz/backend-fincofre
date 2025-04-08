@@ -1,10 +1,7 @@
 package br.com.fincofre.api.services;
 
+import br.com.fincofre.api.models.dtos.*;
 import br.com.fincofre.api.models.entities.spent.*;
-import br.com.fincofre.api.models.dtos.SpentDetailsDTO;
-import br.com.fincofre.api.models.dtos.SpentListingDTO;
-import br.com.fincofre.api.models.dtos.SpentResponseDTO;
-import br.com.fincofre.api.models.dtos.SpentUpdateDTO;
 import br.com.fincofre.api.repositories.UserRepository;
 import br.com.fincofre.api.exceptions.SpentNotFoundException;
 import br.com.fincofre.api.repositories.SpentRepository;
@@ -37,11 +34,12 @@ public class SpentService {
         return new SpentDetailsDTO(spent);
     }
 
-    public List<SpentListingDTO> getSpentsByUser(String auth) {
+    public SpentListWithTotalDTO getSpentsByUser(String auth) {
         var subject = userService.checkAuth(auth);
         var user = userRepository.getReferenceByLogin(subject);
+        var spents = spentRepository.findByUserId(user.getId()).stream().map(SpentListingDTO::new).toList();
 
-        return spentRepository.findByUserId(user.getId()).stream().map(SpentListingDTO::new).toList();
+        return totalAmountSpent(spents);
     }
 
     @Transactional
@@ -79,6 +77,23 @@ public class SpentService {
         if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o login " + subject);
 
         return spent;
+    }
+
+    private SpentListWithTotalDTO totalAmountSpent(List<SpentListingDTO> spents) {
+        double total = 0.0;
+
+        for (SpentListingDTO s : spents) {
+            var value = s.value().replace(",", ".");
+
+            try {
+                double parsed = Double.parseDouble(value);
+                total += parsed;
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException(e.getMessage());
+            }
+        }
+
+        return new SpentListWithTotalDTO(spents, total);
     }
 
 }

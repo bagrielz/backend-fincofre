@@ -2,7 +2,7 @@ package br.com.fincofre.api.controllers;
 
 import br.com.fincofre.api.models.dtos.AuthDTO;
 import br.com.fincofre.api.models.entities.user.User;
-import br.com.fincofre.api.infra.security.TokenDTO;
+import br.com.fincofre.api.models.dtos.TokenDTO;
 import br.com.fincofre.api.services.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

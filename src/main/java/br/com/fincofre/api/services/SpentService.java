@@ -34,12 +34,12 @@ public class SpentService {
         return new SpentDetailsDTO(spent);
     }
 
-    public SpentListWithTotalDTO getSpentsByUser(String auth) {
+    public SpentsListWithTotalDTO getSpentsByUser(String auth) {
         var subject = userService.checkAuth(auth);
         var user = userRepository.getReferenceByLogin(subject);
         var spents = spentRepository.findByUserId(user.getId()).stream().map(SpentListingDTO::new).toList();
 
-        return totalAmountSpent(spents);
+        return totalAmountSpents(spents);
     }
 
     @Transactional
@@ -79,7 +79,7 @@ public class SpentService {
         return spent;
     }
 
-    private SpentListWithTotalDTO totalAmountSpent(List<SpentListingDTO> spents) {
+    private SpentsListWithTotalDTO totalAmountSpents(List<SpentListingDTO> spents) {
         double total = 0.0;
 
         for (SpentListingDTO s : spents) {
@@ -93,7 +93,7 @@ public class SpentService {
             }
         }
 
-        return new SpentListWithTotalDTO(spents, total);
+        return new SpentsListWithTotalDTO(spents, total);
     }
 
 }

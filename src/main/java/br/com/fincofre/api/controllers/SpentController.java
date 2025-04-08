@@ -26,7 +26,7 @@ public class SpentController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<SpentListWithTotalDTO> list(@RequestHeader("Authorization") String auth) {
+    public ResponseEntity<SpentsListWithTotalDTO> list(@RequestHeader("Authorization") String auth) {
         var spentsList = spentService.getSpentsByUser(auth);
 
         return ResponseEntity.ok(spentsList);

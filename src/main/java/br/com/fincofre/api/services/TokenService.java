@@ -44,7 +44,6 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException ex) {
-            ex.printStackTrace();
             throw new RuntimeException("Token JWT inválido ou expirado");
         }
     }

@@ -1,6 +1,7 @@
 package br.com.fincofre.api.services;
 
 import br.com.fincofre.api.exceptions.UserNotFoundException;
+import br.com.fincofre.api.exceptions.ValidationException;
 import br.com.fincofre.api.models.entities.user.User;
 import br.com.fincofre.api.models.dtos.UserDetailsDTO;
 import br.com.fincofre.api.models.dtos.UserResponseDTO;
@@ -22,6 +23,8 @@ public class UserService {
 
     @Transactional
     public UserDetailsDTO createUser(UserResponseDTO response) {
+        if (userRepository.existsByLogin(response.login())) throw new ValidationException("Login " + response.login() + " já existe");
+
         var user = new User(response);
         userRepository.save(user);
 

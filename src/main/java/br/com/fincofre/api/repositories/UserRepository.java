@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User getReferenceByLogin(String username);
 
+    boolean existsByLogin(String username);
 }

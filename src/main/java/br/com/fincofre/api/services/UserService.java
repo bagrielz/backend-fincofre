@@ -23,7 +23,7 @@ public class UserService {
 
     @Transactional
     public UserDetailsDTO createUser(UserResponseDTO response) {
-        if (userRepository.existsByLogin(response.login())) throw new ValidationException("Login " + response.login() + " já existe");
+        checkIfTheLoginExists(response.login());
 
         var user = new User(response);
         userRepository.save(user);
@@ -33,6 +33,8 @@ public class UserService {
 
     @Transactional
     public UserDetailsDTO updateUser(String auth, UserUpdateDTO response) {
+        checkIfTheLoginExists(response.login());
+
         var subject = checkAuth(auth);
         var user = userRepository.getReferenceByLogin(subject);
 
@@ -62,5 +64,9 @@ public class UserService {
     public String checkAuth(String auth) {
         var token = tokenService.recoverToken(auth);
         return tokenService.getSubject(token);
+    }
+
+    private void checkIfTheLoginExists(String login) {
+        if (userRepository.existsByLogin(login)) throw new ValidationException("Login " + login + " já existe");
     }
 }

@@ -32,7 +32,7 @@ public class UserController {
         return ResponseEntity.ok().body(user); // Retorna o corpo do objeto para o front
     }
 
-    @GetMapping("/listar")
+    @GetMapping("/detalhar")
     public ResponseEntity<UserDetailsDTO> list(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserDetailsDTO response) {
         var userDetails = userService.getUserInformation(auth, response);
 

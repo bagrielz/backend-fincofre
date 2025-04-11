@@ -2,6 +2,7 @@ package br.com.fincofre.api.services;
 
 import br.com.fincofre.api.exceptions.UserNotFoundException;
 import br.com.fincofre.api.exceptions.ValidationException;
+import br.com.fincofre.api.models.dtos.UserUpdateDetailsDTO;
 import br.com.fincofre.api.models.entities.user.User;
 import br.com.fincofre.api.models.dtos.UserDetailsDTO;
 import br.com.fincofre.api.models.dtos.UserResponseDTO;
@@ -32,15 +33,15 @@ public class UserService {
     }
 
     @Transactional
-    public UserDetailsDTO updateUser(String auth, UserUpdateDTO response) {
+    public UserUpdateDetailsDTO updateUser(UserUpdateDTO response) {
         checkIfTheLoginExists(response.login());
 
-        var subject = checkAuth(auth);
-        var user = userRepository.getReferenceByLogin(subject);
-
+        var user = userRepository.getReferenceById(response.id());
         user.updateData(response);
 
-        return new UserDetailsDTO(user);
+        var newTokenToUser = tokenService.generateToken(user);
+
+        return new UserUpdateDetailsDTO(user, newTokenToUser);
     }
 
     @Transactional

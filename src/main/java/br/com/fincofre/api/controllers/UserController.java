@@ -3,6 +3,7 @@ package br.com.fincofre.api.controllers;
 import br.com.fincofre.api.models.dtos.UserDetailsDTO;
 import br.com.fincofre.api.models.dtos.UserResponseDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDTO;
+import br.com.fincofre.api.models.dtos.UserUpdateDetailsDTO;
 import br.com.fincofre.api.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,8 @@ public class UserController {
     }
 
     @PutMapping("/atualizar")
-    public ResponseEntity<UserDetailsDTO> update(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserUpdateDTO response) {
-        var user = userService.updateUser(auth, response);
+    public ResponseEntity<UserUpdateDetailsDTO> update(@RequestBody @Valid UserUpdateDTO response) {
+        var user = userService.updateUser(response);
 
         return ResponseEntity.ok().body(user); // Retorna o corpo do objeto para o front
     }

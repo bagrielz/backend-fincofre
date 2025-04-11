@@ -2,12 +2,14 @@ package br.com.fincofre.api.controllers;
 
 import br.com.fincofre.api.models.dtos.*;
 import br.com.fincofre.api.services.SpentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/gastos")
+@SecurityRequirement(name = "bearer-key")
 public class SpentController {
 
     private final SpentService spentService;

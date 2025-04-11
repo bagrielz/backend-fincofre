@@ -5,6 +5,7 @@ import br.com.fincofre.api.models.dtos.UserResponseDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDetailsDTO;
 import br.com.fincofre.api.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class UserController {
     }
 
     @PutMapping("/atualizar")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<UserUpdateDetailsDTO> update(@RequestBody @Valid UserUpdateDTO response) {
         var user = userService.updateUser(response);
 
@@ -34,6 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/detalhar")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<UserDetailsDTO> list(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserDetailsDTO response) {
         var userDetails = userService.getUserInformation(auth, response);
 
@@ -41,6 +44,7 @@ public class UserController {
     }
 
     @DeleteMapping("/excluir")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String auth) {
         userService.deleteUser(auth);
 

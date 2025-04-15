@@ -1,0 +1,15 @@
+services:
+  fincofre-db:
+    image: mysql:8
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: fincofre_api
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql.fincofre_api:/var/lib/mysql
+
+volumes:
+  mysql.fincofre_api:

@@ -1,15 +1,15 @@
 services:
-  fincofre-db:
+  db:
     image: mysql:8
+    container_name: db
     restart: always
     ports:
       - '3306:3306'
     environment:
       MYSQL_DATABASE: fincofre_api
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     volumes:
-      - mysql.fincofre_api:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  mysql.fincofre_api:
+  mysql_data:

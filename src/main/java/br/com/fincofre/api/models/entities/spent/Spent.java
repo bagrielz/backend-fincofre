@@ -7,6 +7,7 @@ import br.com.fincofre.api.models.enums.Category;
 import br.com.fincofre.api.models.enums.Method;
 import br.com.fincofre.api.models.enums.Status;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,20 +26,29 @@ public class Spent {
     private Long id;
 
     @Column(name = "spent_date")
+    @NotBlank
     private String date;
+
+    @NotBlank
     private String spent;
 
     @Enumerated(EnumType.STRING) // Armazena o enum como string no banco de dados
+    @NotBlank
     private Status status;
 
     @Column(name = "spent_value")
+    @NotBlank
     private String value;
 
     @Enumerated(EnumType.STRING)
+    @NotBlank
     private Category category;
+
+    @NotBlank
     private String account;
 
     @Enumerated(EnumType.STRING)
+    @NotBlank
     private Method method;
 
     @ManyToOne

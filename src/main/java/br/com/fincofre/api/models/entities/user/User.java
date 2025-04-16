@@ -3,6 +3,10 @@ package br.com.fincofre.api.models.entities.user;
 import br.com.fincofre.api.models.dtos.UserResponseDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,9 +29,19 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
     private String login;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
+    @Email
     private String email;
+
+    @NotBlank
+    @Pattern(regexp = "^.{8,}$")
     private String password;
 
     public User(UserResponseDTO response) {

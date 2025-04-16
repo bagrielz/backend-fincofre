@@ -17,7 +17,7 @@ public class SpentService {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    public SpentService(SpentRepository spentRepository, UserRepository userRepository, UserService userService, TokenService tokenService) {
+    public SpentService(SpentRepository spentRepository, UserRepository userRepository, UserService userService) {
         this.spentRepository = spentRepository;
         this.userRepository = userRepository;
         this.userService = userService;

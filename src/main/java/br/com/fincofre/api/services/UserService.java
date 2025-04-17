@@ -33,10 +33,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserUpdateDetailsDTO updateUser(UserUpdateDTO response) {
+    public UserUpdateDetailsDTO updateUser(String auth, UserUpdateDTO response) {
+        var subject = checkAuth(auth);
         checkIfTheLoginExists(response.login());
+        var user = userRepository.getReferenceByLogin(subject);
 
-        var user = userRepository.getReferenceById(response.id());
         user.updateData(response);
 
         var newTokenToUser = tokenService.generateToken(user);
@@ -48,8 +49,6 @@ public class UserService {
     public UserDetailsDTO getUserInformation(String auth) {
         var subject = checkAuth(auth);
         var user = userRepository.getReferenceByLogin(subject);
-
-        if (!subject.equals(user.getLogin())) throw new UserNotFoundException("Login " + user.getLogin() + " está incorreto ou não foi encontrado");
 
         return new UserDetailsDTO(user);
     }

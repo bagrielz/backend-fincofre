@@ -37,8 +37,8 @@ public class UserController {
 
     @GetMapping("/detalhar")
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<UserDetailsDTO> detail(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserDetailsDTO response) {
-        var userDetails = userService.getUserInformation(auth, response);
+    public ResponseEntity<UserDetailsDTO> detail(@RequestHeader("Authorization") String auth) {
+        var userDetails = userService.getUserInformation(auth);
 
         return ResponseEntity.ok(userDetails);
     }

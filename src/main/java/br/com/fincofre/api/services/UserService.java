@@ -45,12 +45,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserDetailsDTO getUserInformation(String auth, UserDetailsDTO response) {
+    public UserDetailsDTO getUserInformation(String auth) {
         var subject = checkAuth(auth);
-
-        if (!subject.equals(response.login())) throw new UserNotFoundException("Login " + response.login() + " está incorreto ou não foi encontrado");
-
         var user = userRepository.getReferenceByLogin(subject);
+
+        if (!subject.equals(user.getLogin())) throw new UserNotFoundException("Login " + user.getLogin() + " está incorreto ou não foi encontrado");
 
         return new UserDetailsDTO(user);
     }

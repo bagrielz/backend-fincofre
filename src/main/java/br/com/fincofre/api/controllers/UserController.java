@@ -29,8 +29,8 @@ public class UserController {
 
     @PutMapping("/atualizar")
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<UserUpdateDetailsDTO> update(@RequestBody @Valid UserUpdateDTO response) {
-        var user = userService.updateUser(response);
+    public ResponseEntity<UserUpdateDetailsDTO> update(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserUpdateDTO response) {
+        var user = userService.updateUser(auth, response);
 
         return ResponseEntity.ok().body(user); // Retorna o corpo do objeto para o front
     }

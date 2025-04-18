@@ -23,7 +23,7 @@ public class UserService {
 
     @Transactional
     public UserDetailsDTO createUser(UserResponseDTO response) {
-        checkIfTheLoginExists(response.login());
+        if (!response.login().isBlank()) checkIfTheLoginExists(response.login());
 
         var user = new User(response);
         userRepository.save(user);
@@ -32,39 +32,30 @@ public class UserService {
     }
 
     @Transactional
-    public UserUpdateDetailsDTO updateUser(String auth, UserUpdateDTO response) {
-        var subject = checkAuth(auth);
-        checkIfTheLoginExists(response.login());
+    public UserUpdateDetailsDTO updateUser(String subject, UserUpdateDTO response) {
+        if (!response.login().isBlank()) checkIfTheLoginExists(response.login());
         var user = userRepository.getReferenceByLogin(subject);
 
         user.updateData(response);
-
         var newTokenToUser = tokenService.generateToken(user);
 
         return new UserUpdateDetailsDTO(user, newTokenToUser);
     }
 
     @Transactional
-    public UserDetailsDTO getUserInformation(String auth) {
-        var subject = checkAuth(auth);
+    public UserDetailsDTO getUserInformation(String subject) {
         var user = userRepository.getReferenceByLogin(subject);
 
         return new UserDetailsDTO(user);
     }
 
     @Transactional
-    public void deleteUser(String auth) {
-        var subject = checkAuth(auth);
-
+    public void deleteUser(String subject) {
         userRepository.deleteByLogin(subject);
-    }
-
-    public String checkAuth(String auth) {
-        var token = tokenService.recoverToken(auth);
-        return tokenService.getSubject(token);
     }
 
     private void checkIfTheLoginExists(String login) {
         if (userRepository.existsByLogin(login)) throw new ValidationException("Login " + login + " já existe");
     }
+
 }

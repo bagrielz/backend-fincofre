@@ -4,6 +4,7 @@ import br.com.fincofre.api.models.dtos.UserDetailsDTO;
 import br.com.fincofre.api.models.dtos.UserResponseDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDetailsDTO;
+import br.com.fincofre.api.services.AuthenticatedUserService;
 import br.com.fincofre.api.services.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticatedUserService authenticatedUserService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthenticatedUserService authenticatedUserService) {
         this.userService = userService;
+        this.authenticatedUserService = authenticatedUserService;
     }
 
     @PostMapping("/cadastrar")
@@ -29,24 +32,27 @@ public class UserController {
 
     @PutMapping("/atualizar")
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<UserUpdateDetailsDTO> update(@RequestHeader("Authorization") String auth, @RequestBody @Valid UserUpdateDTO response) {
-        var user = userService.updateUser(auth, response);
+    public ResponseEntity<UserUpdateDetailsDTO> update(@RequestBody @Valid UserUpdateDTO response) {
+        var subject = authenticatedUserService.getUsername();
+        var user = userService.updateUser(subject, response);
 
         return ResponseEntity.ok().body(user); // Retorna o corpo do objeto para o front
     }
 
     @GetMapping("/detalhar")
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<UserDetailsDTO> detail(@RequestHeader("Authorization") String auth) {
-        var userDetails = userService.getUserInformation(auth);
+    public ResponseEntity<UserDetailsDTO> detail() {
+        var subject = authenticatedUserService.getUsername();
+        var userDetails = userService.getUserInformation(subject);
 
         return ResponseEntity.ok(userDetails);
     }
 
     @DeleteMapping("/excluir")
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<Void> delete(@RequestHeader("Authorization") String auth) {
-        userService.deleteUser(auth);
+    public ResponseEntity<Void> delete() {
+        var subject = authenticatedUserService.getUsername();
+        userService.deleteUser(subject);
 
         return ResponseEntity.noContent().build();
     }

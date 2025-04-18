@@ -1,6 +1,5 @@
 package br.com.fincofre.api.services;
 
-import br.com.fincofre.api.exceptions.UserNotFoundException;
 import br.com.fincofre.api.exceptions.ValidationException;
 import br.com.fincofre.api.models.dtos.UserUpdateDetailsDTO;
 import br.com.fincofre.api.models.entities.user.User;

@@ -24,8 +24,7 @@ public class SpentService {
     }
 
     @Transactional
-    public SpentDetailsDTO createSpent(String auth, SpentResponseDTO response) {
-        var subject = userService.checkAuth(auth);
+    public SpentDetailsDTO createSpent(String subject, SpentResponseDTO response) {
         var user = userRepository.getReferenceByLogin(subject);
         var spent = new Spent(response, user);
 
@@ -34,8 +33,7 @@ public class SpentService {
         return new SpentDetailsDTO(spent);
     }
 
-    public SpentsListWithTotalDTO getSpentsByUser(String auth) {
-        var subject = userService.checkAuth(auth);
+    public SpentsListWithTotalDTO getSpentsByUser(String subject) {
         var user = userRepository.getReferenceByLogin(subject);
         var spents = spentRepository.findByUserId(user.getId()).stream().map(SpentListingDTO::new).toList();
 
@@ -43,10 +41,9 @@ public class SpentService {
     }
 
     @Transactional
-    public Spent updateSpent(String auth, SpentUpdateDTO response) {
-        if (!spentRepository.existsById(response.id())) throw new SpentNotFoundException("Gasto com o ID " + response.id() + " não foi encontrado");
-
-        var spent = checkSpentBelongsToUser(auth, response.id());
+    public Spent updateSpent(Long id, SpentUpdateDTO response, String subject) {
+        if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
+        var spent = checkSpentBelongsToUser(subject, id);
 
         spent.updateData(response);
 
@@ -54,26 +51,22 @@ public class SpentService {
     }
 
     @Transactional
-    public void deleteSpent(String auth, Long id) {
+    public void deleteSpent(String subject, Long id) {
         if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
-
-        var spent = checkSpentBelongsToUser(auth, id);
+        var spent = checkSpentBelongsToUser(subject, id);
 
         spentRepository.deleteById(spent.getId());
     }
 
-    public Spent detailSpent(String auth, Long id) {
+    public Spent detailSpent(String subject, Long id) {
         if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
-
-        var checkSpent = checkSpentBelongsToUser(auth, id);
+        var checkSpent = checkSpentBelongsToUser(subject, id);
 
         return spentRepository.getReferenceById(checkSpent.getId());
     }
 
-    private Spent checkSpentBelongsToUser(String auth, Long id) {
-        var subject = userService.checkAuth(auth);
+    private Spent checkSpentBelongsToUser(String subject, Long id) {
         var spent = spentRepository.getReferenceById(id);
-
         if (!spent.getUser().getLogin().equals(subject)) throw new SpentNotFoundException("Gasto não encontrado para o login " + subject);
 
         return spent;

@@ -1,7 +1,11 @@
 package br.com.fincofre.api.infra.security;
 
+import br.com.fincofre.api.exceptions.JwtTokenException;
+import br.com.fincofre.api.exceptions.ValidationException;
+import br.com.fincofre.api.models.dtos.ErrorDTO;
 import br.com.fincofre.api.repositories.UserRepository;
 import br.com.fincofre.api.services.TokenService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,19 +31,34 @@ public class SecurityFilter extends OncePerRequestFilter {
     // Esse método filtra as chamadas à API
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Recupera o token da requisição
-        var authHeader = request.getHeader("Authorization");
-        var token = tokenService.recoverToken(authHeader);
+        try {
+            // Recupera o token da requisição
+            var authHeader = request.getHeader("Authorization");
+            var token = tokenService.recoverToken(authHeader);
 
-        if (token != null) {
-            var subject = tokenService.getSubject(token);
-            var user = repository.findByLogin(subject);
-            var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            if (token != null) {
+                var subject = tokenService.getSubject(token);
+                var user = repository.findByLogin(subject);
 
-            SecurityContextHolder.getContext().setAuthentication(auth);
+                if (user == null) throw new JwtTokenException("Token JWT inválido ou expirado");
+
+                var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+
+            filterChain.doFilter(request, response);
+
+        } catch (JwtTokenException ex) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+
+            var err = new ErrorDTO(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+            var mapper = new ObjectMapper();
+            var json = mapper.writeValueAsString(err);
+
+            response.getWriter().write(json);
         }
-
-        filterChain.doFilter(request, response);
     }
 
 }

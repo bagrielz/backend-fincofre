@@ -23,7 +23,7 @@ public class UserService {
 
     @Transactional
     public UserDetailsDTO createUser(UserResponseDTO response) {
-        if (!response.login().isBlank()) checkIfTheLoginExists(response.login());
+        checkIfTheLoginExists(response.login());
 
         var user = new User(response);
         userRepository.save(user);

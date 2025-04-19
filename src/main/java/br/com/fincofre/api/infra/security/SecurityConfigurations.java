@@ -42,7 +42,7 @@ public class SecurityConfigurations {
 
     // Esse método configura o Spring a usar esse algoritmo como hash de senha
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

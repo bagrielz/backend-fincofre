@@ -6,15 +6,26 @@ import br.com.fincofre.api.models.dtos.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
 
 @RestControllerAdvice
 public class ErrorHandler {
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<ErrorValidationDTO>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        var err = ex.getFieldErrors();
+
+        return ResponseEntity.badRequest().body(err.stream().map(ErrorValidationDTO::new).toList());
+    }
+
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ErrorDTO> handleValidation(ValidationException ex) {
-        var err = new ErrorDTO(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        var err = new ErrorDTO(HttpStatus.CONFLICT.value(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
@@ -31,6 +42,12 @@ public class ErrorHandler {
         var err = new ErrorDTO(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    public record ErrorValidationDTO(String field, String message) {
+        public ErrorValidationDTO(FieldError err) {
+            this(err.getField(), err.getDefaultMessage());
+        }
     }
 
 }

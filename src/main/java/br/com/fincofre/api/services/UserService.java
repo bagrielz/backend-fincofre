@@ -36,13 +36,18 @@ public class UserService {
 
     @Transactional
     public UserUpdateDetailsDTO updateUser(String subject, UserUpdateDTO response) {
-        if (response.login() != null && !response.login().isBlank()) checkIfTheLoginExists(response.login());
         var user = userRepository.getReferenceByLogin(subject);
 
-        user.updateData(response, passwordEncoder);
-        var newTokenToUser = tokenService.generateToken(user);
+        if (response.login() != null && !response.login().isBlank()) checkIfTheLoginExists(response.login());
 
-        return new UserUpdateDetailsDTO(user, newTokenToUser);
+        user.updateData(response, passwordEncoder);
+
+        if (!user.getLogin().equals(subject)) {
+            var newTokenToUser = tokenService.generateToken(user);
+            return new UserUpdateDetailsDTO(user, newTokenToUser);
+        }
+
+        return new UserUpdateDetailsDTO(user, null);
     }
 
     @Transactional

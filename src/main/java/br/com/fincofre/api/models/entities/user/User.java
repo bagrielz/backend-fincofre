@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -43,11 +44,20 @@ public class User implements UserDetails {
     @Pattern(regexp = "^.{8,}$")
     private String password;
 
-    public User(UserResponseDTO response) {
-        this.login = response.login();
-        this.name = response.name();
-        this.email = response.email();
-        this.password = response.password();
+    private User(String login, String name, String email, String password) {
+        this.login = login;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public static User fromDTO(UserResponseDTO dto, BCryptPasswordEncoder encoder) {
+        return new User(
+                dto.login(),
+                dto.name(),
+                dto.email(),
+                encoder.encode(dto.password())
+        );
     }
 
     public void updateData(UserUpdateDTO response) {

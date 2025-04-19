@@ -7,6 +7,7 @@ import br.com.fincofre.api.models.dtos.UserDetailsDTO;
 import br.com.fincofre.api.models.dtos.UserResponseDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDTO;
 import br.com.fincofre.api.repositories.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,17 +16,19 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(TokenService tokenService, UserRepository userRepository) {
+    public UserService(TokenService tokenService, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public UserDetailsDTO createUser(UserResponseDTO response) {
         checkIfTheLoginExists(response.login());
 
-        var user = new User(response);
+        var user = User.fromDTO(response, passwordEncoder);
         userRepository.save(user);
 
         return new UserDetailsDTO(user);
@@ -33,7 +36,7 @@ public class UserService {
 
     @Transactional
     public UserUpdateDetailsDTO updateUser(String subject, UserUpdateDTO response) {
-        if (!response.login().isBlank()) checkIfTheLoginExists(response.login());
+        if (response.login() != null && !response.login().isBlank()) checkIfTheLoginExists(response.login());
         var user = userRepository.getReferenceByLogin(subject);
 
         user.updateData(response);

@@ -39,7 +39,7 @@ public class UserService {
         if (response.login() != null && !response.login().isBlank()) checkIfTheLoginExists(response.login());
         var user = userRepository.getReferenceByLogin(subject);
 
-        user.updateData(response);
+        user.updateData(response, passwordEncoder);
         var newTokenToUser = tokenService.generateToken(user);
 
         return new UserUpdateDetailsDTO(user, newTokenToUser);

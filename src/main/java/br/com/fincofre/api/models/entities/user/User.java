@@ -60,11 +60,11 @@ public class User implements UserDetails {
         );
     }
 
-    public void updateData(UserUpdateDTO response) {
-        if (response.login() != null) this.login = response.login();
-        if (response.name() != null) this.name = response.name();
-        if (response.email() != null) this.email = response.email();
-        if (response.password() != null) this.password = response.password();
+    public void updateData(UserUpdateDTO response, BCryptPasswordEncoder encoder) {
+        if (response.login() != null && !response.login().isBlank()) this.login = response.login();
+        if (response.name() != null && !response.name().isBlank()) this.name = response.name();
+        if (response.email() != null && !response.email().isBlank()) this.email = response.email();
+        if (response.password() != null && !response.password().isBlank()) this.password = encoder.encode(response.password());
     }
 
     @Override

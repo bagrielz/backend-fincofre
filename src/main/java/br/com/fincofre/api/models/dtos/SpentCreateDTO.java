@@ -6,7 +6,7 @@ import br.com.fincofre.api.models.enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record SpentResponseDTO(
+public record SpentCreateDTO(
 
         @NotBlank
         String date,

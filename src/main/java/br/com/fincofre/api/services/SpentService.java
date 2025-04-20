@@ -15,18 +15,16 @@ public class SpentService {
 
     private final SpentRepository spentRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
 
-    public SpentService(SpentRepository spentRepository, UserRepository userRepository, UserService userService) {
+    public SpentService(SpentRepository spentRepository, UserRepository userRepository) {
         this.spentRepository = spentRepository;
         this.userRepository = userRepository;
-        this.userService = userService;
     }
 
     @Transactional
     public SpentDetailsDTO createSpent(String subject, SpentResponseDTO response) {
         var user = userRepository.getReferenceByLogin(subject);
-        var spent = new Spent(response, user);
+        var spent = Spent.fromDTO(response, user);
 
         spentRepository.save(spent);
 

@@ -56,15 +56,28 @@ public class Spent {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Spent(SpentResponseDTO response, User user) {
-        this.date = response.date();
-        this.spent = response.spent();
-        this.status = response.status();
-        this.value = response.value();
-        this.category = response.category();
-        this.account = response.account();
-        this.method = response.method();
+    private Spent(String date, String spent, Status status, String value, Category category, String account, Method method, User user) {
+        this.date = date;
+        this.spent = spent;
+        this.status = status;
+        this.value = value;
+        this.category = category;
+        this.account = account;
+        this.method = method;
         this.user = user;
+    }
+
+    public static Spent fromDTO(SpentResponseDTO dto, User user) {
+        return new Spent(
+                dto.date(),
+                dto.spent(),
+                dto.status(),
+                dto.value(),
+                dto.category(),
+                dto.account(),
+                dto.method(),
+                user
+        );
     }
 
     public void updateData(SpentUpdateDTO response) {

@@ -1,5 +1,6 @@
 package br.com.fincofre.api.services;
 
+import br.com.fincofre.api.exceptions.JwtTokenException;
 import br.com.fincofre.api.models.entities.user.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -44,7 +45,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException ex) {
-            throw new RuntimeException("Token JWT inválido ou expirado");
+            throw new JwtTokenException("Token JWT inválido ou expirado");
         }
     }
 

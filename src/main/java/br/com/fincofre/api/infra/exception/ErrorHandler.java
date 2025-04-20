@@ -1,5 +1,6 @@
 package br.com.fincofre.api.infra.exception;
 
+import br.com.fincofre.api.exceptions.JwtTokenException;
 import br.com.fincofre.api.exceptions.SpentNotFoundException;
 import br.com.fincofre.api.exceptions.ValidationException;
 import br.com.fincofre.api.models.dtos.ErrorDTO;
@@ -21,6 +22,13 @@ public class ErrorHandler {
         var err = ex.getFieldErrors();
 
         return ResponseEntity.badRequest().body(err.stream().map(ErrorValidationDTO::new).toList());
+    }
+
+    @ExceptionHandler(JwtTokenException.class)
+    public ResponseEntity<ErrorDTO> handleJwtToken(JwtTokenException ex) {
+        var err = new ErrorDTO(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
     }
 
     @ExceptionHandler(ValidationException.class)

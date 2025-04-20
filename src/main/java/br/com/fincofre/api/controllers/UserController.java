@@ -1,7 +1,7 @@
 package br.com.fincofre.api.controllers;
 
+import br.com.fincofre.api.models.dtos.UserCreateDTO;
 import br.com.fincofre.api.models.dtos.UserDetailsDTO;
-import br.com.fincofre.api.models.dtos.UserResponseDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDetailsDTO;
 import br.com.fincofre.api.services.AuthenticatedUserService;
@@ -24,17 +24,17 @@ public class UserController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<UserDetailsDTO> register(@RequestBody @Valid UserResponseDTO response) {
-        var user = userService.createUser(response);
+    public ResponseEntity<UserDetailsDTO> register(@RequestBody @Valid UserCreateDTO data) {
+        var user = userService.createUser(data);
 
         return ResponseEntity.ok().body(user);
     }
 
     @PutMapping("/atualizar")
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity<UserUpdateDetailsDTO> update(@RequestBody @Valid UserUpdateDTO response) {
+    public ResponseEntity<UserUpdateDetailsDTO> update(@RequestBody @Valid UserUpdateDTO data) {
         var subject = authenticatedUserService.getUsername();
-        var user = userService.updateUser(subject, response);
+        var user = userService.updateUser(subject, data);
 
         return ResponseEntity.ok().body(user); // Retorna o corpo do objeto para o front
     }

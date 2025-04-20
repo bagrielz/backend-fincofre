@@ -22,9 +22,9 @@ public class SpentController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<SpentDetailsDTO> register(@RequestBody @Valid SpentResponseDTO response) {
+    public ResponseEntity<SpentDetailsDTO> register(@RequestBody @Valid SpentCreateDTO data) {
         var subject = authenticatedUserService.getUsername();
-        var spent = spentService.createSpent(subject, response);
+        var spent = spentService.createSpent(subject, data);
 
         return ResponseEntity.ok().body(spent);
     }
@@ -38,9 +38,9 @@ public class SpentController {
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<SpentDetailsDTO> update(@PathVariable Long id, @RequestBody @Valid SpentUpdateDTO response) {
+    public ResponseEntity<SpentDetailsDTO> update(@PathVariable Long id, @RequestBody @Valid SpentUpdateDTO data) {
         var subject = authenticatedUserService.getUsername();
-        var spent = spentService.updateSpent(id, response, subject);
+        var spent = spentService.updateSpent(id, data, subject);
 
         return ResponseEntity.ok(new SpentDetailsDTO(spent));
     }

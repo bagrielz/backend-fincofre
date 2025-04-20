@@ -1,7 +1,7 @@
 package br.com.fincofre.api.models.entities.spent;
 
+import br.com.fincofre.api.models.dtos.SpentCreateDTO;
 import br.com.fincofre.api.models.entities.user.User;
-import br.com.fincofre.api.models.dtos.SpentResponseDTO;
 import br.com.fincofre.api.models.dtos.SpentUpdateDTO;
 import br.com.fincofre.api.models.enums.Category;
 import br.com.fincofre.api.models.enums.Method;
@@ -67,7 +67,7 @@ public class Spent {
         this.user = user;
     }
 
-    public static Spent fromDTO(SpentResponseDTO dto, User user) {
+    public static Spent fromDTO(SpentCreateDTO dto, User user) {
         return new Spent(
                 dto.date(),
                 dto.spent(),

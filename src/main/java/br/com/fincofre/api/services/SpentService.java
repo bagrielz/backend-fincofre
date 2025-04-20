@@ -22,9 +22,9 @@ public class SpentService {
     }
 
     @Transactional
-    public SpentDetailsDTO createSpent(String subject, SpentResponseDTO response) {
+    public SpentDetailsDTO createSpent(String subject, SpentCreateDTO data) {
         var user = userRepository.getReferenceByLogin(subject);
-        var spent = Spent.fromDTO(response, user);
+        var spent = Spent.fromDTO(data, user);
 
         spentRepository.save(spent);
 
@@ -33,17 +33,17 @@ public class SpentService {
 
     public SpentsListWithTotalDTO getSpentsByUser(String subject) {
         var user = userRepository.getReferenceByLogin(subject);
-        var spents = spentRepository.findByUserId(user.getId()).stream().map(SpentListingDTO::new).toList();
+        var spents = spentRepository.findByUserId(user.getId()).stream().map(SpentListDTO::new).toList();
 
         return totalAmountSpents(spents);
     }
 
     @Transactional
-    public Spent updateSpent(Long id, SpentUpdateDTO response, String subject) {
+    public Spent updateSpent(Long id, SpentUpdateDTO data, String subject) {
         if (!spentRepository.existsById(id)) throw new SpentNotFoundException("Gasto com o ID " + id + " não foi encontrado");
         var spent = checkSpentBelongsToUser(subject, id);
 
-        spent.updateData(response);
+        spent.updateData(data);
 
         return spent;
     }
@@ -70,10 +70,10 @@ public class SpentService {
         return spent;
     }
 
-    private SpentsListWithTotalDTO totalAmountSpents(List<SpentListingDTO> spents) {
+    private SpentsListWithTotalDTO totalAmountSpents(List<SpentListDTO> spents) {
         double total = 0.0;
 
-        for (SpentListingDTO s : spents) {
+        for (SpentListDTO s : spents) {
             var value = s.value().replace(",", ".");
 
             try {

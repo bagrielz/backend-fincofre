@@ -1,6 +1,6 @@
 package br.com.fincofre.api.models.entities.user;
 
-import br.com.fincofre.api.models.dtos.UserResponseDTO;
+import br.com.fincofre.api.models.dtos.UserCreateDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -51,7 +51,7 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public static User fromDTO(UserResponseDTO dto, BCryptPasswordEncoder encoder) {
+    public static User fromDTO(UserCreateDTO dto, BCryptPasswordEncoder encoder) {
         return new User(
                 dto.login(),
                 dto.name(),

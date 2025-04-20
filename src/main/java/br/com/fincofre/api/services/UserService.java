@@ -1,10 +1,10 @@
 package br.com.fincofre.api.services;
 
 import br.com.fincofre.api.exceptions.ValidationException;
+import br.com.fincofre.api.models.dtos.UserCreateDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDetailsDTO;
 import br.com.fincofre.api.models.entities.user.User;
 import br.com.fincofre.api.models.dtos.UserDetailsDTO;
-import br.com.fincofre.api.models.dtos.UserResponseDTO;
 import br.com.fincofre.api.models.dtos.UserUpdateDTO;
 import br.com.fincofre.api.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,22 +25,22 @@ public class UserService {
     }
 
     @Transactional
-    public UserDetailsDTO createUser(UserResponseDTO response) {
-        checkIfTheLoginExists(response.login());
+    public UserDetailsDTO createUser(UserCreateDTO data) {
+        checkIfTheLoginExists(data.login());
 
-        var user = User.fromDTO(response, passwordEncoder);
+        var user = User.fromDTO(data, passwordEncoder);
         userRepository.save(user);
 
         return new UserDetailsDTO(user);
     }
 
     @Transactional
-    public UserUpdateDetailsDTO updateUser(String subject, UserUpdateDTO response) {
+    public UserUpdateDetailsDTO updateUser(String subject, UserUpdateDTO data) {
         var user = userRepository.getReferenceByLogin(subject);
 
-        if (response.login() != null && !response.login().isBlank()) checkIfTheLoginExists(response.login());
+        if (data.login() != null && !data.login().isBlank()) checkIfTheLoginExists(data.login());
 
-        user.updateData(response, passwordEncoder);
+        user.updateData(data, passwordEncoder);
 
         if (!user.getLogin().equals(subject)) {
             var newTokenToUser = tokenService.generateToken(user);

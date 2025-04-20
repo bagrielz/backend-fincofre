@@ -8,7 +8,9 @@ import br.com.fincofre.api.repositories.SpentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class SpentService {
@@ -84,7 +86,10 @@ public class SpentService {
             }
         }
 
-        return new SpentsListWithTotalDTO(spents, total);
+        var formatBR = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+        String formatted = formatBR.format(total);
+
+        return new SpentsListWithTotalDTO(spents, formatted);
     }
 
 }

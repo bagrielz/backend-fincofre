@@ -7,6 +7,7 @@ create table spents (
     spent_value varchar(20) not null,
     category varchar(100) not null,
     account varchar(100) not null,
+    spent_type varchar(20) not null,
     method varchar(100) not null,
     spent_date varchar(10) not null,
 

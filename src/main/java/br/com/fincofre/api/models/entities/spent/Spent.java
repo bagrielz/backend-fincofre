@@ -49,9 +49,10 @@ public class Spent {
     @NotBlank
     private String account;
 
+    @Column(name = "spent_type")
     @Enumerated(EnumType.STRING)
     @NotBlank
-    private SpentType spentType;
+    private SpentType type;
 
     @Enumerated(EnumType.STRING)
     @NotNull

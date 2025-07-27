@@ -5,6 +5,7 @@ import br.com.fincofre.api.models.entities.user.User;
 import br.com.fincofre.api.models.dtos.SpentUpdateDTO;
 import br.com.fincofre.api.models.enums.Category;
 import br.com.fincofre.api.models.enums.Method;
+import br.com.fincofre.api.models.enums.SpentType;
 import br.com.fincofre.api.models.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -47,6 +48,11 @@ public class Spent {
 
     @NotBlank
     private String account;
+
+    @Column(name = "spent_type")
+    @Enumerated(EnumType.STRING)
+    @NotBlank
+    private SpentType type;
 
     @Enumerated(EnumType.STRING)
     @NotNull

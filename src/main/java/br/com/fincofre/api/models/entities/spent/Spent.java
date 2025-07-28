@@ -62,12 +62,13 @@ public class Spent {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Spent(String date, String spent, Status status, String value, Category category, String account, Method method, User user) {
+    private Spent(String date, String spent, Status status, String value, Category category, SpentType type, String account, Method method, User user) {
         this.date = date;
         this.spent = spent;
         this.status = status;
         this.value = value;
         this.category = category;
+        this.type = type;
         this.account = account;
         this.method = method;
         this.user = user;
@@ -80,6 +81,7 @@ public class Spent {
                 dto.status(),
                 dto.value(),
                 dto.category(),
+                dto.type(),
                 dto.account(),
                 dto.method(),
                 user

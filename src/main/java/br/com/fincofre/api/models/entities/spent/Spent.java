@@ -51,7 +51,7 @@ public class Spent {
 
     @Column(name = "spent_type")
     @Enumerated(EnumType.STRING)
-    @NotBlank
+    @NotNull
     private SpentType type;
 
     @Enumerated(EnumType.STRING)

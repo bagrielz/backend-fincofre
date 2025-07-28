@@ -19,7 +19,7 @@ public record SpentCreateDTO(
         String value,
         @NotNull
         Category category,
-        @NotBlank
+        @NotNull
         SpentType type,
         @NotBlank
         String account,

@@ -15,6 +15,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Table(name = "spents") // Define o nome da tabela no banco de dados
 @Entity(name = "Spent") // Marca esta classe como uma entidade JPA
 @Getter // Gera automaticamente os métodos getter (Lombok)
@@ -39,8 +41,8 @@ public class Spent {
     private Status status;
 
     @Column(name = "spent_value")
-    @NotBlank
-    private String value;
+    @NotNull
+    private BigDecimal value;
 
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -62,7 +64,7 @@ public class Spent {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Spent(String date, String spent, Status status, String value, Category category, SpentType type, String account, Method method, User user) {
+    private Spent(String date, String spent, Status status, BigDecimal value, Category category, SpentType type, String account, Method method, User user) {
         this.date = date;
         this.spent = spent;
         this.status = status;

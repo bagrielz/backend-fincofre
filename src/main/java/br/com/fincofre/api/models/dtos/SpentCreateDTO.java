@@ -7,6 +7,8 @@ import br.com.fincofre.api.models.enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 public record SpentCreateDTO(
 
         @NotBlank
@@ -15,8 +17,8 @@ public record SpentCreateDTO(
         String spent,
         @NotNull
         Status status,
-        @NotBlank
-        String value,
+        @NotNull
+        BigDecimal value,
         @NotNull
         Category category,
         @NotNull

@@ -14,7 +14,6 @@ import java.time.LocalDate;
 public record SpentCreateDTO(
 
         @NotNull
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
         LocalDate date,
         @NotBlank
         String spent,

@@ -7,6 +7,7 @@ import br.com.fincofre.api.models.enums.Status;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
-public record SpentUpdateDTO(String date, String spent, Status status, BigDecimal value, Category category, SpentType type, String account, Method method) {
+public record SpentUpdateDTO(LocalDate date, String spent, Status status, BigDecimal value, Category category, SpentType type, String account, Method method) {
 }

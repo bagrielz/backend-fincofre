@@ -7,6 +7,7 @@ import br.com.fincofre.api.models.enums.Category;
 import br.com.fincofre.api.models.enums.Method;
 import br.com.fincofre.api.models.enums.SpentType;
 import br.com.fincofre.api.models.enums.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Table(name = "spents") // Define o nome da tabela no banco de dados
 @Entity(name = "Spent") // Marca esta classe como uma entidade JPA
@@ -30,8 +32,8 @@ public class Spent {
     private Long id;
 
     @Column(name = "spent_date")
-    @NotBlank
-    private String date;
+    @NotNull
+    private LocalDate date;
 
     @NotBlank
     private String spent;
@@ -64,7 +66,7 @@ public class Spent {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Spent(String date, String spent, Status status, BigDecimal value, Category category, SpentType type, String account, Method method, User user) {
+    private Spent(LocalDate date, String spent, Status status, BigDecimal value, Category category, SpentType type, String account, Method method, User user) {
         this.date = date;
         this.spent = spent;
         this.status = status;

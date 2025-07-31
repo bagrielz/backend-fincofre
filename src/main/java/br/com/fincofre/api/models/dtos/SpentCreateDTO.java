@@ -4,15 +4,18 @@ import br.com.fincofre.api.models.enums.Category;
 import br.com.fincofre.api.models.enums.Method;
 import br.com.fincofre.api.models.enums.SpentType;
 import br.com.fincofre.api.models.enums.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public record SpentCreateDTO(
 
-        @NotBlank
-        String date,
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+        LocalDate date,
         @NotBlank
         String spent,
         @NotNull

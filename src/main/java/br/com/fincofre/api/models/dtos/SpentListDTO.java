@@ -7,8 +7,9 @@ import br.com.fincofre.api.models.enums.SpentType;
 import br.com.fincofre.api.models.enums.Status;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
-public record SpentListDTO(Long id, String date, String spent, Status status, BigDecimal value, Category category, SpentType type, String account, Method method) {
+public record SpentListDTO(Long id, LocalDate date, String spent, Status status, BigDecimal value, Category category, SpentType type, String account, Method method) {
 
     public SpentListDTO(Spent data) {
         this(data.getId(), data.getDate(), data.getSpent(), data.getStatus(), data.getValue(), data.getCategory(), data.getType(), data.getAccount(), data.getMethod());

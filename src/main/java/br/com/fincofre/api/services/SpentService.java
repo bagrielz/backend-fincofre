@@ -8,6 +8,7 @@ import br.com.fincofre.api.repositories.SpentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -73,20 +74,21 @@ public class SpentService {
     }
 
     private SpentsListWithTotalDTO totalAmountSpents(List<SpentListDTO> spents) {
-        double total = 0.0;
+        BigDecimal total = BigDecimal.ZERO;
 
         for (SpentListDTO s : spents) {
-            var value = s.value().replace(",", ".");
-
             try {
-                double parsed = Double.parseDouble(value);
-                total += parsed;
-            } catch (NumberFormatException e) {
-                throw new NumberFormatException(e.getMessage());
+                BigDecimal value = s.value();
+                total = total.add(value);
+            } catch (NullPointerException e) {
+                throw new IllegalArgumentException("Valor do gasto não pode ser nulo");
             }
         }
 
         var formatBR = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+        formatBR.setMinimumFractionDigits(2);
+        formatBR.setMaximumFractionDigits(2);
+
         String formatted = formatBR.format(total);
 
         return new SpentsListWithTotalDTO(spents, formatted);

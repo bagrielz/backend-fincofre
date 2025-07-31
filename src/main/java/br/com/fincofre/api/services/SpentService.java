@@ -85,13 +85,7 @@ public class SpentService {
             }
         }
 
-        var formatBR = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
-        formatBR.setMinimumFractionDigits(2);
-        formatBR.setMaximumFractionDigits(2);
-
-        String formatted = formatBR.format(total);
-
-        return new SpentsListWithTotalDTO(spents, formatted);
+        return new SpentsListWithTotalDTO(spents, total);
     }
 
 }

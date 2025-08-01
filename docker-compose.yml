@@ -11,5 +11,20 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
+  api:
+    build: .
+    container_name: api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+    env_file:
+      - .env
+
 volumes:
   mysql_data:

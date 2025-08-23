@@ -23,7 +23,8 @@ public class SecurityConfigurations {
     // Esse método altera o modelo de autenticação para STATELESS
     @Bean // Anotação que expõe automaticamente o retorno do método para o Spring
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http.cors(cors -> {})
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers("/auth/login", "/usuarios/cadastrar").permitAll(); // Libera essa requisição para qualquer usuário acessar

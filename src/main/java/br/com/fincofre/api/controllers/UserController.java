@@ -30,7 +30,7 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
-    @PutMapping("/atualizar")
+    @PatchMapping("/atualizar")
     @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<UserUpdateDetailsDTO> update(@RequestBody @Valid UserUpdateDTO data) {
         var subject = authenticatedUserService.getUsername();

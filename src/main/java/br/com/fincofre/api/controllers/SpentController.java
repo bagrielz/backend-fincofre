@@ -37,7 +37,7 @@ public class SpentController {
         return ResponseEntity.ok(spentsList);
     }
 
-    @PutMapping("/atualizar/{id}")
+    @PatchMapping("/atualizar/{id}")
     public ResponseEntity<SpentDetailsDTO> update(@PathVariable Long id, @RequestBody @Valid SpentUpdateDTO data) {
         var subject = authenticatedUserService.getUsername();
         var spent = spentService.updateSpent(id, data, subject);

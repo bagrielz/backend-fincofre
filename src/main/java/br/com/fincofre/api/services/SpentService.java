@@ -2,6 +2,7 @@ package br.com.fincofre.api.services;
 
 import br.com.fincofre.api.models.dtos.*;
 import br.com.fincofre.api.models.entities.spent.*;
+import br.com.fincofre.api.models.enums.SpentType;
 import br.com.fincofre.api.repositories.UserRepository;
 import br.com.fincofre.api.exceptions.SpentNotFoundException;
 import br.com.fincofre.api.repositories.SpentRepository;
@@ -9,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class SpentService {
@@ -37,6 +36,17 @@ public class SpentService {
     public SpentsListWithTotalDTO getSpentsByUser(String subject) {
         var user = userRepository.getReferenceByLogin(subject);
         var spents = spentRepository.findByUserId(user.getId()).stream().map(SpentListDTO::new).toList();
+
+        return totalAmountSpents(spents);
+    }
+
+    public SpentsListWithTotalDTO getTheSpentsFromTheType(String subject, SpentType type) {
+        var user = userRepository.getReferenceByLogin(subject);
+        var spents = spentRepository.findByUserIdAndType(user.getId(), type).stream().map(SpentListDTO::new).toList();
+
+        if (spents.isEmpty()) {
+            throw new SpentNotFoundException("Gastos com o tipo " + type + " não foram encontrados");
+        }
 
         return totalAmountSpents(spents);
     }

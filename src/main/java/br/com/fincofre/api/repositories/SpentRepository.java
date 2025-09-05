@@ -1,6 +1,7 @@
 package br.com.fincofre.api.repositories;
 
 import br.com.fincofre.api.models.entities.spent.Spent;
+import br.com.fincofre.api.models.enums.SpentType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface SpentRepository extends JpaRepository<Spent, Long> {
 
     List<Spent> findByUserId(Long user);
 
+    List<Spent> findByUserIdAndType(Long userId, SpentType type);
 }

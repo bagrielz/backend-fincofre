@@ -1,5 +1,6 @@
 package br.com.fincofre.api.controllers;
 
+import br.com.fincofre.api.models.enums.SpentType;
 import br.com.fincofre.api.services.AuthenticatedUserService;
 import br.com.fincofre.api.models.dtos.*;
 import br.com.fincofre.api.services.SpentService;
@@ -33,6 +34,14 @@ public class SpentController {
     public ResponseEntity<SpentsListWithTotalDTO> list() {
         var subject = authenticatedUserService.getUsername();
         var spentsList = spentService.getSpentsByUser(subject);
+
+        return ResponseEntity.ok(spentsList);
+    }
+
+    @GetMapping("/listar-por-tipo")
+    public ResponseEntity<SpentsListWithTotalDTO> listOfTypeSpents(@RequestParam SpentType type) {
+        var subject = authenticatedUserService.getUsername();
+        var spentsList = spentService.getTheSpentsFromTheType(subject, type);
 
         return ResponseEntity.ok(spentsList);
     }

@@ -33,9 +33,9 @@ public class ErrorHandler {
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ErrorDTO> handleValidation(ValidationException ex) {
-        var err = new ErrorDTO(HttpStatus.CONFLICT.value(), ex.getMessage());
+        var err = new ErrorDTO(HttpStatus.FORBIDDEN.value(), ex.getMessage());
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 
     @ExceptionHandler(SpentNotFoundException.class)

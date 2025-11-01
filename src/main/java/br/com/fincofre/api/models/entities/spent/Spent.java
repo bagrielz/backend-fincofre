@@ -98,6 +98,7 @@ public class Spent {
         if (response.status() != null) this.status = response.status();
         if (response.value() != null) this.value = response.value();
         if (response.category() != null) this.category = response.category();
+        if (response.type() != null) this.type = response.type();
         if (response.account() != null) this.account = response.account();
         if (response.method() != null) this.method = response.method();
     }

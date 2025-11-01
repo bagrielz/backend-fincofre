@@ -4,6 +4,7 @@ public enum Status {
 
     AGENDADO,
     AGUARDANDO,
+    CANCELADO,
     CONCLUÍDO;
 
 }
